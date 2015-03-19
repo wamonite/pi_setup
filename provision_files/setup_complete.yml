@@ -1,0 +1,5 @@
+---
+- name: Complete| Mark upgrade complete
+  file: path={{upgrade_file}} state=touch
+  sudo: true
+  when: run_upgrade

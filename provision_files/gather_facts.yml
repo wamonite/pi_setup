@@ -1,0 +1,19 @@
+---
+- name: Facts| Check for previous upgrade
+  stat: path={{upgrade_file}}
+  sudo: true
+  register: upgrade_file_stat
+
+- name: Facts| Store previous upgrade result
+  set_fact: run_upgrade={{not upgrade_file_stat.stat.exists}}
+
+- name: Facts| Check for pip
+  stat: path=/usr/local/bin/pip
+  sudo: true
+  register: pip_stat
+
+- name: Facts| Store pip result
+  set_fact: pip_needed={{not pip_stat.stat.exists}}
+
+- name: Facts| Wifi settings
+  set_fact: setup_wifi={{wifi_ssid is defined and wifi_password is defined}}

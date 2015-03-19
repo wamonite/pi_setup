@@ -1,0 +1,11 @@
+---
+- name: Provision| Pi
+  hosts: all
+  vars:
+    upgrade_file: /root/pi_setup_upgrade_complete
+  tasks:
+    - include: gather_facts.yml
+    - include: setup_common.yml
+    - include: setup_user.yml user_name=pi
+    - include: setup_user.yml user_name=root
+    - include: setup_complete.yml

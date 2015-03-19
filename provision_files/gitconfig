@@ -1,0 +1,6 @@
+[alias]
+    ignored = ls-files -o -i --exclude-standard
+    logv = log --name-status
+    graph = log --graph --decorate --pretty=oneline --abbrev-commit --date=relative --date-order
+[color]
+    ui = auto
