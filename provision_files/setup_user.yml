@@ -5,7 +5,12 @@
   sudo_user: '{{user_name}}'
   with_items:
     - vimrc
-    - gitconfig
+
+- name: User| Write git config
+  template: src=gitconfig.j2 dest=~/.gitconfig mode=0644
+  sudo: true
+  sudo_user: '{{user_name}}'
+  when: setup_git
 
 - name: User| Create virtualenv directory
   file: path=~/.virtualenvs state=directory

@@ -25,12 +25,12 @@
   sudo: true
   when: setup_wifi
 
-- name: Common| Enable wlan0 config
+- name: Common| Disable initial wlan0 config
   lineinfile: dest=/etc/network/interfaces regexp='^wpa-roam ' state=absent
   sudo: true
   when: setup_wifi
 
-- name: Common| Enable wlan0 config
+- name: Common| Enable new wlan0 config
   lineinfile: dest=/etc/network/interfaces insertafter='^iface wlan0 ' line='wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf' state=present
   sudo: true
   when: setup_wifi
