@@ -17,7 +17,6 @@
 
         192.168.1.2 wifi_ssid=mywifi wifi_password=wifipassword123 git_name='Me' git_email='me@example.com'
 
-
 * Run `./provision.sh`.
 * Reboot the Pi.
 * If you enabled wifi, don't forget to replace the IP address or host name in the `inventory` file with your wireless IP address or host name.
