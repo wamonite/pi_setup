@@ -13,9 +13,10 @@
     * `wifi_password`: Password for the specifed access point.
     * `git_name`: Name to be set in the git config file.
     * `git_email`: Name to be set in the git config file.
-    * Here is an example `inventory` entry for a Pi at 192.168.1.2:-
+* Here is an example `inventory` entry for a Pi at `192.168.1.2`:-
 
-            192.168.1.2 wifi_ssid=mywifi wifi_password=wifipassword123 git_name='Me' git_email='me@example.com'
+        192.168.1.2 wifi_ssid=mywifi wifi_password=wifipassword123 git_name='Me' git_email='me@example.com'
+
 
 * Run `./provision.sh`.
 * Reboot the Pi.
