@@ -4,12 +4,12 @@
   become: true
 
 - name: Check for previous upgrade
-  stat: path={{upgrade_file}}
+  stat: path={{ upgrade_file }}
   become: true
   register: upgrade_file_stat
 
 - name: Store previous upgrade result
-  set_fact: run_upgrade={{not upgrade_file_stat.stat.exists}}
+  set_fact: run_upgrade={{ not upgrade_file_stat.stat.exists }}
 
 - name: Full upgrade
   apt: upgrade=dist
@@ -17,12 +17,12 @@
   when: run_upgrade
 
 - name: Mark upgrade complete
-  file: path={{upgrade_file}} state=touch
+  file: path={{ upgrade_file }} state=touch
   become: true
   when: run_upgrade
 
 - name: Installing packages
-  apt: pkg={{item}} state=present
+  apt: pkg={{ item }} state=present
   become: true
   with_items:
     - vim
@@ -41,7 +41,7 @@
   register: pip_stat
 
 - name: Store pip result
-  set_fact: pip_needed={{not pip_stat.stat.exists}}
+  set_fact: pip_needed={{ not pip_stat.stat.exists }}
 
 - name: Get pip
   get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
@@ -53,7 +53,7 @@
   when: pip_needed
 
 - name: Add Python packages
-  pip: name={{item}} state=present
+  pip: name={{ item }} state=present
   become: true
   with_items:
     - virtualenv

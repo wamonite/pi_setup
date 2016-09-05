@@ -6,9 +6,9 @@
     - restart sshd
 
 - name: Common| Authorise SSH public key
-  authorized_key: user={{item}} key="{{lookup('file', '~/.ssh/id_rsa.pub')}}" manage_dir=no state=present
+  authorized_key: user={{ item }} key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=no state=present
   become: true
-  become_user: '{{item}}'
+  become_user: '{{ item }}'
   with_items:
     - pi
 
