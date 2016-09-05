@@ -1,7 +1,7 @@
 ---
 - name: Facts| Check for previous upgrade
   stat: path={{upgrade_file}}
-  sudo: true
+  become: true
   register: upgrade_file_stat
 
 - name: Facts| Store previous upgrade result
@@ -9,7 +9,7 @@
 
 - name: Facts| Check for pip
   stat: path=/usr/local/bin/pip
-  sudo: true
+  become: true
   register: pip_stat
 
 - name: Facts| Store pip result

@@ -1,28 +1,28 @@
 ---
 - name: User| Copy dot files
   copy: src={{item}} dest=~/.{{item}}
-  sudo: true
-  sudo_user: '{{user_name}}'
+  become: true
+  become_user: '{{user_name}}'
   with_items:
     - vimrc
 
 - name: User| Write git config
   template: src=gitconfig.j2 dest=~/.gitconfig mode=0644
-  sudo: true
-  sudo_user: '{{user_name}}'
+  become: true
+  become_user: '{{user_name}}'
   when: setup_git
 
 - name: User| Create virtualenv directory
   file: path=~/.virtualenvs state=directory
-  sudo: true
-  sudo_user: '{{user_name}}'
+  become: true
+  become_user: '{{user_name}}'
 
 - name: User| Adding virtualenv path to .bashrc
   lineinfile: dest=~/.bashrc regexp="^export WORKON_HOME=" line="export WORKON_HOME=$HOME/.virtualenvs" state=present
-  sudo: true
-  sudo_user: '{{user_name}}'
+  become: true
+  become_user: '{{user_name}}'
 
 - name: User| Adding virtualenvwrapper.sh to .bashrc
   lineinfile: dest=~/.bashrc line="[ -r /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh" insertafter="^export WORKON_HOME=" state=present
-  sudo: true
-  sudo_user: '{{user_name}}'
+  become: true
+  become_user: '{{user_name}}'

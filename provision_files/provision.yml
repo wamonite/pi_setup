@@ -9,3 +9,9 @@
     - include: setup_user.yml user_name=pi
     - include: setup_user.yml user_name=root
     - include: setup_complete.yml
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
+      become: true

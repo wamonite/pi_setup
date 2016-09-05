@@ -1,57 +1,56 @@
 ---
-- name: Common| Authorise public key
+- name: Common| Disable root SSH login
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no' state=present
+  become: true
+  notify:
+    - restart sshd
+
+- name: Common| Authorise SSH public key
   authorized_key: user={{item}} key="{{lookup('file', '~/.ssh/id_rsa.pub')}}" manage_dir=no state=present
-  sudo: true
-  sudo_user: '{{item}}'
+  become: true
+  become_user: '{{item}}'
   with_items:
     - pi
-    - root
 
-- name: Common| Random password
-  user: name=pi state=present password={{item}} update_password=always
-  sudo: true
-  with_password: password_{{ansible_hostname}} length=16 encrypt=sha256_crypt
+- name: Common| Set password
+  user: name=pi state=present password="{{ lookup('file', 'password') }}" update_password=always
+  become: true
 
 - name: Common| HDMI group (DMT)
   lineinfile: dest=/boot/config.txt regexp='^hdmi_group=' line='hdmi_group=2' state=present
-  sudo: true
+  become: true
 
 - name: Common| HDMI mode (1280x1024 60Hz)
   lineinfile: dest=/boot/config.txt regexp='^hdmi_mode=' line='hdmi_mode=35' state=present
-  sudo: true
+  become: true
 
 - name: Common| Enable wlan0
   lineinfile: dest=/etc/network/interfaces regexp='^iface wlan0 ' line='iface wlan0 inet dhcp' state=present
-  sudo: true
+  become: true
   when: setup_wifi
 
 - name: Common| Disable initial wlan0 config
   lineinfile: dest=/etc/network/interfaces regexp='^wpa-roam ' state=absent
-  sudo: true
-  when: setup_wifi
-
-- name: Common| Enable new wlan0 config
-  lineinfile: dest=/etc/network/interfaces insertafter='^iface wlan0 ' line='wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf' state=present
-  sudo: true
+  become: true
   when: setup_wifi
 
 - name: Common| Write network config
   template: src=wpa_supplicant.conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
-  sudo: true
+  become: true
   when: setup_wifi
 
 - name: Common| Update repositories
   apt: update_cache=yes cache_valid_time=86400
-  sudo: true
+  become: true
 
 - name: Common| Full upgrade
   apt: upgrade=dist
-  sudo: true
+  become: true
   when: run_upgrade
 
 - name: Common| Installing packages
   apt: pkg={{item}} state=present
-  sudo: true
+  become: true
   with_items:
     - vim
     - htop
@@ -69,12 +68,12 @@
 
 - name: Common| Install pip
   shell: python /tmp/get-pip.py chdir=/tmp
-  sudo: true
+  become: true
   when: pip_needed
 
 - name: Common| Add Python packages
   pip: name={{item}} state=present
-  sudo: true
+  become: true
   with_items:
     - virtualenv
     - virtualenvwrapper
