@@ -1,5 +1,0 @@
----
-- name: Complete| Mark upgrade complete
-  file: path={{upgrade_file}} state=touch
-  become: true
-  when: run_upgrade

@@ -1,0 +1,17 @@
+---
+- name: Common| Disable root SSH login
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no' state=present
+  become: true
+  notify:
+    - restart sshd
+
+- name: Common| Authorise SSH public key
+  authorized_key: user={{item}} key="{{lookup('file', '~/.ssh/id_rsa.pub')}}" manage_dir=no state=present
+  become: true
+  become_user: '{{item}}'
+  with_items:
+    - pi
+
+- name: Common| Set password
+  user: name=pi state=present password="{{ lookup('file', 'password') }}" update_password=always
+  become: true

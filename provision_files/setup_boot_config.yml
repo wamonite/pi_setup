@@ -1,0 +1,26 @@
+---
+- name: Wifi settings
+  set_fact: setup_wifi={{wifi_ssid is defined and wifi_password is defined}}
+
+- name: HDMI group (DMT)
+  lineinfile: dest=/boot/config.txt regexp='^hdmi_group=' line='hdmi_group=2' state=present
+  become: true
+
+- name: HDMI mode (1280x1024 60Hz)
+  lineinfile: dest=/boot/config.txt regexp='^hdmi_mode=' line='hdmi_mode=35' state=present
+  become: true
+
+- name: Enable wlan0
+  lineinfile: dest=/etc/network/interfaces regexp='^iface wlan0 ' line='iface wlan0 inet dhcp' state=present
+  become: true
+  when: setup_wifi
+
+- name: Disable initial wlan0 config
+  lineinfile: dest=/etc/network/interfaces regexp='^wpa-roam ' state=absent
+  become: true
+  when: setup_wifi
+
+- name: Write network config
+  template: src=wpa_supplicant.conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
+  become: true
+  when: setup_wifi

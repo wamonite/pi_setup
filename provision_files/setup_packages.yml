@@ -1,0 +1,60 @@
+---
+- name: Update repositories
+  apt: update_cache=yes cache_valid_time=86400
+  become: true
+
+- name: Check for previous upgrade
+  stat: path={{upgrade_file}}
+  become: true
+  register: upgrade_file_stat
+
+- name: Store previous upgrade result
+  set_fact: run_upgrade={{not upgrade_file_stat.stat.exists}}
+
+- name: Full upgrade
+  apt: upgrade=dist
+  become: true
+  when: run_upgrade
+
+- name: Mark upgrade complete
+  file: path={{upgrade_file}} state=touch
+  become: true
+  when: run_upgrade
+
+- name: Installing packages
+  apt: pkg={{item}} state=present
+  become: true
+  with_items:
+    - vim
+    - htop
+    - ntp
+    - git
+    - libjpeg-dev
+    - libfreetype6-dev
+    - python
+    - python-dev
+    - libyaml-dev
+
+- name: Check for pip
+  stat: path=/usr/local/bin/pip
+  become: true
+  register: pip_stat
+
+- name: Store pip result
+  set_fact: pip_needed={{not pip_stat.stat.exists}}
+
+- name: Get pip
+  get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+  when: pip_needed
+
+- name: Install pip
+  shell: python /tmp/get-pip.py chdir=/tmp
+  become: true
+  when: pip_needed
+
+- name: Add Python packages
+  pip: name={{item}} state=present
+  become: true
+  with_items:
+    - virtualenv
+    - virtualenvwrapper

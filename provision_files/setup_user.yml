@@ -1,28 +1,31 @@
 ---
-- name: User| Copy dot files
+- name: Git settings
+  set_fact: setup_git={{git_name is defined and git_email is defined}}
+
+- name: Write git config
+  template: src=gitconfig.j2 dest=~/.gitconfig mode=0644
+  become: true
+  become_user: '{{user_name}}'
+  when: setup_git
+
+- name: Copy dot files
   copy: src={{item}} dest=~/.{{item}}
   become: true
   become_user: '{{user_name}}'
   with_items:
     - vimrc
 
-- name: User| Write git config
-  template: src=gitconfig.j2 dest=~/.gitconfig mode=0644
-  become: true
-  become_user: '{{user_name}}'
-  when: setup_git
-
-- name: User| Create virtualenv directory
+- name: Create virtualenv directory
   file: path=~/.virtualenvs state=directory
   become: true
   become_user: '{{user_name}}'
 
-- name: User| Adding virtualenv path to .bashrc
+- name: Adding virtualenv path to .bashrc
   lineinfile: dest=~/.bashrc regexp="^export WORKON_HOME=" line="export WORKON_HOME=$HOME/.virtualenvs" state=present
   become: true
   become_user: '{{user_name}}'
 
-- name: User| Adding virtualenvwrapper.sh to .bashrc
+- name: Adding virtualenvwrapper.sh to .bashrc
   lineinfile: dest=~/.bashrc line="[ -r /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh" insertafter="^export WORKON_HOME=" state=present
   become: true
   become_user: '{{user_name}}'
