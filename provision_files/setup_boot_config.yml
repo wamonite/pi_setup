@@ -14,6 +14,23 @@
   become: true
   notify: reboot
 
+- name: GPU settings
+  set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
+
+- name: Set GPU
+  lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem={{ setup_gpu_mem }}' state=present
+  become: true
+  notify: reboot
+
+- name: Camera settings
+  set_fact: setup_camera={{ camera is defined and camera }}
+
+- name: Enable camera
+  lineinfile: dest=/boot/config.txt regexp='^start_x=' line='start_x=1' state=present
+  become: true
+  when: setup_camera
+  notify: reboot
+
 - name: Wifi settings
   set_fact: setup_wifi={{ wifi_ssid is defined and wifi_password is defined }}
 
