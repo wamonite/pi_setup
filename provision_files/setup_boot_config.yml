@@ -2,10 +2,17 @@
 - name: HDMI group (DMT)
   lineinfile: dest=/boot/config.txt regexp='^hdmi_group=' line='hdmi_group=2' state=present
   become: true
+  notify: reboot
 
 - name: HDMI mode (1280x1024 60Hz)
   lineinfile: dest=/boot/config.txt regexp='^hdmi_mode=' line='hdmi_mode=35' state=present
   become: true
+  notify: reboot
+
+- name: LCD rotate (for Pimoroni LCD case)
+  lineinfile: dest=/boot/config.txt regexp='^lcd_rotate=' line='lcd_rotate=2' state=present
+  become: true
+  notify: reboot
 
 - name: Wifi settings
   set_fact: setup_wifi={{ wifi_ssid is defined and wifi_password is defined }}
@@ -24,6 +31,7 @@
   template: src=wpa_supplicant.conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
   become: true
   when: setup_wifi
+  notify: reboot
 
 - name: 1 wire settings
   set_fact: setup_w1_gpio={{ w1_gpio is defined and w1_gpio }}
