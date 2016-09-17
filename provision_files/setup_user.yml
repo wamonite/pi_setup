@@ -1,7 +1,4 @@
 ---
-- name: Git settings
-  set_fact: setup_git={{ git_name is defined and git_email is defined }}
-
 - name: Write git config
   template: src=gitconfig.j2 dest=~/.gitconfig mode=0644
   become: true

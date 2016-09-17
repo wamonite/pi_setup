@@ -1,14 +1,8 @@
 ---
-- name: HDMI group settings
-  set_fact: setup_hdmi_group={{ hdmi_group | default(0) }}
-
 - name: Set HDMI group
   lineinfile: dest=/boot/config.txt regexp='^hdmi_group=' line='hdmi_group={{ setup_hdmi_group }}' state=present
   become: true
   notify: reboot
-
-- name: HDMI mode settings
-  set_fact: setup_hdmi_mode={{ hdmi_mode | default(16) }}
 
 - name: Set HDMI mode
   lineinfile: dest=/boot/config.txt regexp='^hdmi_mode=' line='hdmi_mode={{ setup_hdmi_mode }}' state=present
@@ -20,25 +14,16 @@
   become: true
   notify: reboot
 
-- name: GPU settings
-  set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
-
 - name: Set GPU
   lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem={{ setup_gpu_mem }}' state=present
   become: true
   notify: reboot
-
-- name: Camera settings
-  set_fact: setup_camera={{ camera is defined and camera }}
 
 - name: Enable camera
   lineinfile: dest=/boot/config.txt regexp='^start_x=' line='start_x=1' state=present
   become: true
   when: setup_camera
   notify: reboot
-
-- name: Wifi settings
-  set_fact: setup_wifi={{ wifi_ssid is defined and wifi_password is defined }}
 
 - name: Enable wlan0
   lineinfile: dest=/etc/network/interfaces regexp='^iface wlan0 ' line='iface wlan0 inet dhcp' state=present
@@ -50,9 +35,6 @@
   become: true
   when: setup_wifi
   notify: reboot
-
-- name: 1 wire settings
-  set_fact: setup_w1_gpio={{ w1_gpio is defined and w1_gpio }}
 
 - name: Enable 1 wire
   lineinfile: dest=/boot/config.txt line='dtoverlay=w1-gpio' state=present

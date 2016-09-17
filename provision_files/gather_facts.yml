@@ -1,0 +1,24 @@
+---
+- name: HDMI group settings
+  set_fact: setup_hdmi_group={{ hdmi_group | default(0) }}
+
+- name: HDMI mode settings
+  set_fact: setup_hdmi_mode={{ hdmi_mode | default(16) }}
+
+- name: GPU settings
+  set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
+
+- name: Camera settings
+  set_fact: setup_camera={{ camera is defined and camera }}
+
+- name: Wifi settings
+  set_fact: setup_wifi={{ wifi_ssid is defined and wifi_password is defined }}
+
+- name: 1 wire settings
+  set_fact: setup_w1_gpio={{ w1_gpio is defined and w1_gpio }}
+
+- name: Git settings
+  set_fact: setup_git={{ git_name is defined and git_email is defined }}
+
+- name: OctoPrint settings
+  set_fact: setup_octoprint={{ octoprint is defined and octoprint }}

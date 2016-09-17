@@ -4,6 +4,7 @@
   vars:
     upgrade_file: /root/pi_setup_upgrade_complete
   tasks:
+    - include: gather_facts.yml
     - include: setup_boot_config.yml
     - include: setup_ssh.yml
     - include: setup_packages.yml
