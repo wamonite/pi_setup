@@ -1,0 +1,34 @@
+---
+- name: Installing packages
+  apt: pkg={{ item }} state=present
+  become: true
+  with_items:
+    - v4l-utils
+    - cmake
+    - liblog4cpp5-dev
+    - liblivemedia-dev
+    - libasound2-dev
+
+- name: Get v4l2rtspserver
+  git: repo=https://github.com/mpromonet/v4l2rtspserver.git dest=/home/pi/src/v4l2rtspserver
+
+- name: Prepare v4l2rtspserver
+  command: cmake .
+  args:
+    chdir: /home/pi/src/v4l2rtspserver
+    creates: CMakeFiles
+
+- name: Build v4l2rtspserver
+  command: make
+  args:
+    chdir: /home/pi/src/v4l2rtspserver
+    creates: v4l2rtspserver
+
+- name: Copy v4l2rtspserver script
+  copy: src=start_v4l2rtspserver.sh dest=/home/pi/src/v4l2rtspserver/start_v4l2rtspserver.sh mode=0755
+  notify: reboot
+
+- name: Enable v4l2rtspserver script
+  lineinfile: dest=/etc/rc.local line="/home/pi/src/v4l2rtspserver/start_v4l2rtspserver.sh" insertbefore="^exit 0" state=present
+  become: true
+

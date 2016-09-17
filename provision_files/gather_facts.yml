@@ -8,8 +8,11 @@
 - name: GPU settings
   set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
 
+- name: Camera server settings
+  set_fact: setup_camera_server={{ camera_server is defined and camera_server }}
+
 - name: Camera settings
-  set_fact: setup_camera={{ camera is defined and camera }}
+  set_fact: setup_camera={{ (camera is defined and camera) or setup_camera_server }}
 
 - name: Wifi settings
   set_fact: setup_wifi={{ wifi_ssid is defined and wifi_password is defined }}
