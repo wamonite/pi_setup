@@ -11,11 +11,10 @@
     - include: setup_user.yml user_name=root
     - include: setup_octoprint.yml
   handlers:
+    # static: false can be removed once 2.1.2 is released
     - name: restart sshd
-      service:
-        name: sshd
-        state: restarted
-      become: true
+      include: handler_restart_sshd.yml
+      static: false
 
     # static: false can be removed once 2.1.2 is released
     - name: reboot
