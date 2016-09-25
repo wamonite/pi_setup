@@ -14,9 +14,9 @@ The script behaviour is determined by Ansible variables set in the `inventory`:-
 
 ### Config
 
-* `hdmi_group`: value to set in the [boot config](https://www.raspberrypi.org/documentation/configuration/config-txt.md) (default: 0).
-* `hdmi_mode`: value to set in the [boot config](https://www.raspberrypi.org/documentation/configuration/config-txt.md) (default: 16).
-* `gpu_mem`: GPU memory in MB (default:128).
+* `hdmi_group`: value to set in the [boot config](https://www.raspberrypi.org/documentation/configuration/config-txt.md) (default: 0 = auto-detect).
+* `hdmi_mode`: value to set in the [boot config](https://www.raspberrypi.org/documentation/configuration/config-txt.md) (default: 16 = 1080p @ 60Hz).
+* `gpu_mem`: GPU memory in MB (default: 128).
 * `camera`: enable the camera.
 * `w1_gpio`: enable one-wire GPIO.
 
@@ -45,7 +45,8 @@ Here is an example `inventory` entry for a Pi with the hostname `mypi`:-
         mypi wifi_ssid=mywifi wifi_password=wifipassword123 git_name='Me' git_email='me@example.com'
 
 Run `./do_provision.sh`, which will reboot the Pi if necessary.
-	* If you enabled wifi, you may need to replace the IP address or host name in the `inventory` file with the updated IP address or host name.
+
+If you enabled wifi, you may need to replace the IP address or host name in the `inventory` file with the updated IP address or host name.
 
 ## TO DO
 
