@@ -25,6 +25,3 @@
 
 - name: Docker settings
   set_fact: setup_docker={{ docker is defined and docker }}
-
-- name: OctoPrint settings
-  set_fact: setup_octoprint={{ octoprint is defined and octoprint }}

@@ -17,8 +17,6 @@
     - include: setup_docker.yml
       become: true
       when: setup_docker
-    - include: setup_octoprint.yml
-      when: setup_octoprint
   handlers:
     # static: false can be removed once 2.1.2 is released
     - name: restart sshd

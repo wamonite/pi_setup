@@ -1,7 +1,0 @@
----
-- name: Install OctoPrint
-  pip: name='git+https://github.com/foosel/OctoPrint.git@1.2.15#egg=octoprint' editable=false virtualenv=/home/pi/.virtualenvs/octoprint
-
-- name: Enable serial access
-  user: name=pi groups=dialout append=yes
-  become: true
