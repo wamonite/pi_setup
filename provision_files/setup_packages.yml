@@ -1,11 +1,9 @@
 ---
 - name: Update repositories
   apt: update_cache=yes cache_valid_time=86400
-  become: true
 
 - name: Check for previous upgrade
   stat: path={{ upgrade_file }}
-  become: true
   register: upgrade_file_stat
 
 - name: Store previous upgrade result
@@ -13,17 +11,14 @@
 
 - name: Full upgrade
   apt: upgrade=dist
-  become: true
   when: run_upgrade
 
 - name: Mark upgrade complete
   file: path={{ upgrade_file }} state=touch
-  become: true
   when: run_upgrade
 
 - name: Installing packages
   apt: pkg={{ item }} state=present
-  become: true
   with_items:
     - vim
     - htop
@@ -37,7 +32,6 @@
 
 - name: Check for pip
   stat: path=/usr/local/bin/pip
-  become: true
   register: pip_stat
 
 - name: Store pip result
@@ -49,12 +43,10 @@
 
 - name: Install pip
   shell: python /tmp/get-pip.py chdir=/tmp
-  become: true
   when: pip_needed
 
 - name: Add Python packages
   pip: name={{ item }} state=present
-  become: true
   with_items:
     - virtualenv
     - virtualenvwrapper

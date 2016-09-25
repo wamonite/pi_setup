@@ -1,28 +1,21 @@
 ---
 - name: Create Docker systemd directory
   file: path=/etc/systemd/system/docker.service.d mode=0755 state=directory
-  become: true
 
 - name: Install Docker systemd service
   copy: src=docker_systemd_service.conf dest=/etc/systemd/system/docker.service.d/overlay.conf mode=0644
-  become: true
 
 - name: Install Docker GPG key
   apt_key: keyserver=keyserver.ubuntu.com id=58118E89F3A912897C070ADBF76221572C52609D
-  become: true
 
 - name: Install Docker apt sources
   apt_repository: repo='deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main' update_cache=yes state=present
-  become: true
 
 - name: Install Docker
   apt: name=docker-engine update_cache=no state=present
-  become: true
 
 - name: Enable Docker
   service: name=docker enabled=yes state=started
-  become: true
 
 - name: Enable Docker user
   user: name=pi groups=docker append=yes
-  become: true
