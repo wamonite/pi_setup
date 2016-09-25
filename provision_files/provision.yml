@@ -10,8 +10,12 @@
     - include: setup_packages.yml
     - include: setup_user.yml user_name=pi
     - include: setup_user.yml user_name=root
-    - include: setup_octoprint.yml
     - include: setup_camera_server.yml
+      when: setup_camera_server
+    - include: setup_docker.yml
+      when: setup_docker
+    - include: setup_octoprint.yml
+      when: setup_octoprint
   handlers:
     # static: false can be removed once 2.1.2 is released
     - name: restart sshd
