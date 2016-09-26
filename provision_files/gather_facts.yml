@@ -8,6 +8,9 @@
 - name: GPU settings
   set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
 
+- name: Swap settings
+  set_fact: setup_swap_mem={{ swap_mem | default(0) }}
+
 - name: Camera server settings
   set_fact: setup_camera_server={{ camera_server is defined and camera_server }}
 

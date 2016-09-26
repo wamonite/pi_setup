@@ -27,3 +27,7 @@
     - name: reboot
       include: handler_reboot.yml
       static: false
+
+    - name: enable swap mem
+      service: name=dphys-swapfile enabled=yes state=restarted
+      become: true

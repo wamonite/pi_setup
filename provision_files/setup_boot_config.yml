@@ -15,6 +15,15 @@
   lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem={{ setup_gpu_mem }}' state=present
   notify: reboot
 
+- name: Install swap memory package
+  apt: pkg=dphys-swapfile state=present
+  when: setup_swap_mem | int > 0
+
+- name: Set swap memory
+  lineinfile: dest=/etc/dphys-swapfile regexp='^CONF_SWAPSIZE=' line='CONF_SWAPSIZE={{ setup_swap_mem }}' state=present
+  when: setup_swap_mem | int > 0
+  notify: enable swap mem
+
 - name: Enable camera
   lineinfile: dest=/boot/config.txt regexp='^start_x=' line='start_x=1' state=present
   when: setup_camera
