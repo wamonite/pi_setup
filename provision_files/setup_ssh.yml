@@ -11,6 +11,14 @@
 - name: Authorise SSH public key
   authorized_key: user=pi key="{{ lookup('file', setup_ssh_authorized_keys_file) }}" manage_dir=no state=present
 
+- name: Check for password file
+  local_action: stat path="{{ inventory_dir }}/provision_files/password"
+  register: password_file_stat
+
+- name: Store password file result
+  set_fact: set_password={{ password_file_stat.stat.exists }}
+
 - name: Set password
-  user: name=pi state=present password="{{ lookup('file', 'password') }}" update_password=always
+  user: name=pi state=present password="{{ lookup('file', '{{ inventory_dir }}/provision_files/password') }}" update_password=always
   become: true
+  when: set_password
