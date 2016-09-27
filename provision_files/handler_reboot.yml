@@ -8,3 +8,4 @@
 
 - name: Wait for reboot
   local_action: wait_for port=22 host="{{ ansible_ssh_host | default(inventory_hostname) }}" search_regex=OpenSSH delay=30
+  become: false

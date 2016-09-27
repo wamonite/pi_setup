@@ -17,6 +17,10 @@
   file: path={{ var_path }}/{{ upgrade_file }} state=touch
   when: run_upgrade
 
+- name: Reboot
+  include: handler_reboot.yml
+  when: run_upgrade
+
 - name: Installing packages
   apt: pkg={{ item }} state=present
   with_items:
@@ -29,6 +33,7 @@
     - python
     - python-dev
     - libyaml-dev
+    - apt-transport-https
 
 - name: Check for pip
   stat: path=/usr/local/bin/pip
