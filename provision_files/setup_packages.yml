@@ -3,7 +3,7 @@
   apt: update_cache=yes cache_valid_time=86400
 
 - name: Check for previous upgrade
-  stat: path={{ upgrade_file }}
+  stat: path={{ var_path }}/{{ upgrade_file }}
   register: upgrade_file_stat
 
 - name: Store previous upgrade result
@@ -14,7 +14,7 @@
   when: run_upgrade
 
 - name: Mark upgrade complete
-  file: path={{ upgrade_file }} state=touch
+  file: path={{ var_path }}/{{ upgrade_file }} state=touch
   when: run_upgrade
 
 - name: Installing packages

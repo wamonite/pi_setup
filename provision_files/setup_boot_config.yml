@@ -1,4 +1,23 @@
 ---
+- name: Create var directory
+  file: path={{ var_path }} mode=0755 state=directory
+
+- name: Check for previous resize
+  stat: path={{ var_path }}/{{ resize_file }}
+  register: resize_file_stat
+
+- name: Store previous upgrade result
+  set_fact: run_resize={{ not resize_file_stat.stat.exists }}
+
+- name: Resize filesystem
+  command: raspi-config --expand-rootfs
+  when: run_resize
+  notify: reboot
+
+- name: Mark resize complete
+  file: path={{ var_path }}/{{ resize_file }} state=touch
+  when: run_resize
+
 - name: Set HDMI group
   lineinfile: dest=/boot/config.txt regexp='^hdmi_group=' line='hdmi_group={{ setup_hdmi_group }}' state=present
   notify: reboot
