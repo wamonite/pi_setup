@@ -33,6 +33,7 @@
     - python
     - python-dev
     - libyaml-dev
+    - software-properties-common
     - apt-transport-https
 
 - name: Check for pip
