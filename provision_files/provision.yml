@@ -27,13 +27,17 @@
       become: true
       when: setup_docker
 
+    - include: setup_phatdac.yml
+      become: true
+      when: setup_phatdac
+
   handlers:
-    # static: false can be removed once 2.1.2 is released
+    # static: false required again as of 2.2.1
     - name: restart sshd
       include: handler_restart_sshd.yml
       static: false
 
-    # static: false can be removed once 2.1.2 is released
+    # static: false required again as of 2.2.1
     - name: reboot
       include: handler_reboot.yml
       static: false

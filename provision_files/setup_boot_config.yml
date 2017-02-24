@@ -61,3 +61,13 @@
   lineinfile: dest=/boot/config.txt line='dtoverlay=w1-gpio' state=present
   when: setup_w1_gpio
   notify: reboot
+
+- name: Disable audio
+  lineinfile: dest=/boot/config.txt regexp='dtparam=audio=on' line='#dtparam=audio=on' state=present
+  when: setup_phatdac
+  notify: reboot
+
+- name: Enable phatdac
+  lineinfile: dest=/boot/config.txt line='dtoverlay=hifiberry-dac' state=present
+  when: setup_phatdac
+  notify: reboot
