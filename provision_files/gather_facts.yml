@@ -31,3 +31,9 @@
 
 - name: Phatdac settings
   set_fact: setup_phatdac={{ phatdac is defined and phatdac }}
+
+- name: Neopixel settings
+  set_fact: setup_neopixel={{ neopixel is defined and neopixel }}
+
+- name: Audio settings
+  set_fact: disable_audio={{ setup_phatdac or setup_neopixel }}

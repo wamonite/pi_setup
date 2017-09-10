@@ -64,7 +64,7 @@
 
 - name: Disable audio
   lineinfile: dest=/boot/config.txt regexp='dtparam=audio=on' line='#dtparam=audio=on' state=present
-  when: setup_phatdac
+  when: disable_audio
   notify: reboot
 
 - name: Enable phatdac
