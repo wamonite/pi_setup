@@ -6,7 +6,7 @@
   set_fact: setup_hdmi_mode={{ hdmi_mode | default(16) }}
 
 - name: GPU settings
-  set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 128 ] | max }}
+  set_fact: setup_gpu_mem={{ [ gpu_mem | default(128), 16 ] | max }}
 
 - name: Swap settings
   set_fact: setup_swap_mem={{ swap_mem | default(0) }}
