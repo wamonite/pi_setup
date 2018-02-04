@@ -5,14 +5,22 @@
 - name: Install Docker systemd service
   copy: src=docker_systemd_service.conf dest=/etc/systemd/system/docker.service.d/overlay.conf mode=0644
 
+- name: Create Docker etc directory
+  file: path=/etc/docker mode=0755 state=directory
+
+- name: Install Docker daemon.json
+  copy: src=docker_daemon.json dest=/etc/docker/daemon.json mode=0644
+
 - name: Install Docker GPG key
-  apt_key: keyserver=keyserver.ubuntu.com id=58118E89F3A912897C070ADBF76221572C52609D
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
 
 - name: Install Docker apt sources
-  apt_repository: repo='deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main' update_cache=yes state=present
+  apt_repository: repo='deb [arch=armhf] https://download.docker.com/linux/raspbian stretch stable' update_cache=yes state=present
 
 - name: Install Docker
-  apt: name=docker-engine update_cache=no state=present
+  apt: name=docker-ce update_cache=no state=present
 
 - name: Enable Docker
   service: name=docker enabled=yes state=started
