@@ -1,3 +1,4 @@
+---
 - name: Set phatdac ALSA config
   copy:
     content: |
