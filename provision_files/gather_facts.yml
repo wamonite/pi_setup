@@ -37,3 +37,6 @@
 
 - name: Audio settings
   set_fact: disable_audio={{ setup_phatdac or setup_neopixel }}
+
+- name: i2c settings
+  set_fact: setup_i2c={{ i2c is defined and i2c }}

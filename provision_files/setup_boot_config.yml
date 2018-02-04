@@ -71,3 +71,23 @@
   lineinfile: dest=/boot/config.txt line='dtoverlay=hifiberry-dac' state=present
   when: setup_phatdac
   notify: reboot
+
+- name: Enable i2c (i2c1)
+  lineinfile: dest=/boot/config.txt line='dtparam=i2c1=on' state=present
+  when: setup_i2c
+  notify: reboot
+
+- name: Enable i2c (i2c_arm)
+  lineinfile: dest=/boot/config.txt line='dtparam=i2c_arm=on' state=present
+  when: setup_i2c
+  notify: reboot
+
+- name: Enable i2c (i2c-bcm2708)
+  lineinfile: dest=/etc/modules line='i2c-bcm2708' state=present
+  when: setup_i2c
+  notify: reboot
+
+- name: Enable i2c (i2c-dev)
+  lineinfile: dest=/etc/modules line='i2c-dev' state=present
+  when: setup_i2c
+  notify: reboot

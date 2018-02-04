@@ -1,0 +1,7 @@
+---
+- name: Installing packages
+  apt: pkg={{ item }} state=present
+  become: true
+  with_items:
+    - python-smbus
+    - i2c-tools

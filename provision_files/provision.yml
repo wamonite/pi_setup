@@ -31,6 +31,10 @@
       become: true
       when: setup_phatdac
 
+    - include: setup_i2c.yml
+      become: true
+      when: setup_i2c
+
   handlers:
     # static: false required again as of 2.2.1
     - name: restart sshd
