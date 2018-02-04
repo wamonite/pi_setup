@@ -11,6 +11,8 @@
 - name: Install Docker daemon.json
   copy: src=docker_daemon.json dest=/etc/docker/daemon.json mode=0644
 
+# TODO uninstall previous package and apt repo on upgrade
+
 - name: Install Docker GPG key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
